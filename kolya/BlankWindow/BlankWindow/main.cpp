@@ -17,7 +17,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE prevInstance,
 	wndClass.hCursor = LoadCursor( NULL, IDC_ARROW );
 	wndClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wndClass.lpszMenuName = NULL;
-	wndClass.lpszClassName = "DX11BiijWindowClass";
+	wndClass.lpszClassName = "DX11BookWindowClass";
 
 	if (!RegisterClassEx(&wndClass))
 		return -1;
