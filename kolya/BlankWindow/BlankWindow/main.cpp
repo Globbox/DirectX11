@@ -1,5 +1,6 @@
 #include<Windows.h>
-#include <memory>
+
+LRESULT CALLBACK WndProc( HWND hwnd,UINT message, WPARAM wParam, LPARAM lParam );
 
 int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE prevInstance, 
 					 LPWSTR cmdLine, int cmdShow) {
@@ -8,7 +9,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE prevInstance,
 	UNREFERENCED_PARAMETER(cmdLine);		// о неиспользуемых параметрах 
 											// вообще всегда будем использовтаь только hInstance и cmdShow
 	
-	WNDCLASSEX wndClass = {0};
+	WNDCLASSEX wndClass = { 0 };
 	wndClass.cbSize = sizeof(WNDCLASSEX);
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc = WndProc;
@@ -30,6 +31,46 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE prevInstance,
 		return -1;
 
 	ShowWindow(hwnd, cmdShow);
+
+	// Demo Initialize
+	MSG msg = { 0 };
+
+	while (msg.message != WM_QUIT) {
+		
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			// Update
+			// Draw
+		}
+	}
+
+	// Demo Shutdown
+
+	return static_cast<int>( msg.wParam );
+}
+
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	PAINTSTRUCT paintStruct;
+	HDC hDC;
+
+	switch (message) {
+		
+		case WM_PAINT:
+			hDC = BeginPaint( hwnd, &paintStruct );
+			EndPaint( hwnd, &paintStruct );
+			break;
+		
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		
+		default:
+			return DefWindowProc( hwnd, message, wParam, lParam );
+	}
 
 	return 0;
 }
